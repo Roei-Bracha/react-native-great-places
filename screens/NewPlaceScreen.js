@@ -1,18 +1,29 @@
 import React, { useState} from 'react'
-import { View, Text, Button, StyleSheet, TextInput, ScrollView } from 'react-native';
+import { View, Text, Button, StyleSheet, TextInput, ScrollView, } from 'react-native';
 import Colors from '../constants/Colors';
+import { useDispatch } from 'react-redux'
+import { addPlace } from '../store/places-actions';
+
 
 const NewPlaceScreen = (props) => {
     const [titleValue, setTitleValue] = useState('')
+    const dispatch = useDispatch()
+
+    const titleChangeHandler = text => {
+        // you could add validation
+        setTitleValue(text);
+    };
     
     const savePlaceHandler = () => {
-        
+        console.log(titleValue)
+        dispatch(addPlace(titleValue))
+        props.navigation.goBack()
     }
     return (
         <ScrollView>
             <View style={styles.form}>
                 <Text style={styles.label}>Title</Text>
-                <TextInput style={styles.textInput} value={titleValue} onChange={(text)=>{setTitleValue(text)}}/>
+                <TextInput style={styles.textInput} value={titleValue} onChangeText={titleChangeHandler}/>
                 <Button title={"Save Place"} color={Colors.primary} onPress={savePlaceHandler}/>
             </View>
         </ScrollView>
