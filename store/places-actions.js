@@ -1,6 +1,8 @@
-export const ADD_PLACE = 'ADD_PLACE'
 import * as FileSystem from 'expo-file-system';
+import { insertPlace, fetchPlaces } from '../helpers/db';
 
+export const ADD_PLACE = 'ADD_PLACE'
+export const SET_PLACES = 'SET_PLACES';
 
 export const addPlace = (title, image) => {
     return async (dispatch) => {
@@ -11,11 +13,25 @@ export const addPlace = (title, image) => {
                 from: image,
                 to: newPath
             });
+            const dbResult = await insertPlace(title, image, 'dummy address', 15.6, 12.3)
+            console.log(dbResult)
+            dispatch({ type: ADD_PLACE, placeData: {id:dbResult.insertId, title, image:newPath } })
         }
         catch (err) {
             console.log(err)
             throw new Error(err)
         }
-        dispatch({ type: ADD_PLACE, placeData: { title, image:newPath } })
+    }
+}
+
+export const loadPlaces = () => {
+    return async dispatch => {
+        try {
+            const dbResult = await fetchPlaces()
+            dispatch({type:SET_PLACES, places: dbResult.rows._array})
+        }
+        catch (err) {
+            throw(err)
+        }
     }
 }
