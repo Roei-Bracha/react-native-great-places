@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image , View, StyleSheet } from 'react-native';
+import { Image , View, StyleSheet, TouchableOpacity } from 'react-native';
 import env from '../env'
 const Component = (props) => {
     let imagePreviewUrl
@@ -7,14 +7,14 @@ const Component = (props) => {
         imagePreviewUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${props.location.lat},${props.location.lng}&zoom=13&size=400x200&maptype=roadmap&markers=color:red%7Clabel:A%7C${props.location.lat},${props.location.lng}&key=${env.googleApiKey}`
     }
     return (
-        <View style={{ ...props.style, ...styles.mapPreview }}>
+        <TouchableOpacity style={{ ...props.style, ...styles.mapPreview }} onPress={props.onPress}>
             {imagePreviewUrl ? <Image style={styles.mapImage} source={{ uri: imagePreviewUrl }}/> : props.children }
-        </View>
+        </TouchableOpacity>
     )
 }
 
 const styles = StyleSheet.create({
-    screen: {
+    mapPreview: {
         justifyContent: 'center',
         alignItems:'center'
     },
