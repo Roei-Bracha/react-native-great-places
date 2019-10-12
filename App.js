@@ -5,7 +5,13 @@ import { Provider } from 'react-redux'
 import ReduxThunk from 'redux-thunk'
 import PlacesNavigator from './navigation/PlacesNavigation'
 import placesReducer from './store/places-reducer';
+import { init } from './helpers/db';
 
+init().then(() => {
+  console.log('initialized database')
+}).catch((err) => {
+  console.error('filed to initialize the database' , err)
+})
 const rootReducer = combineReducers({places:placesReducer})
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk))
